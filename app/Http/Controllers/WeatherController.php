@@ -25,8 +25,8 @@ class WeatherController extends Controller {
             $country = Str::lower($weatherRequest->validated()['country']);
             $city = Str::lower($weatherRequest->validated()['city']);
 
-            $openWeatherMapProvider = new OpenWeatherMapProvider($city, $country);
             $weatherbit = new WeatherBitProvider($city, $country);
+            $openWeatherMapProvider = new OpenWeatherMapProvider($city, $country);
 
             $averageProvider = new AverageWeatherDataProvider(
                 $openWeatherMapProvider,

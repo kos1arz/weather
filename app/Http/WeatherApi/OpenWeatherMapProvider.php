@@ -26,17 +26,18 @@ class OpenWeatherMapProvider implements WeatherDataProviderInterface
         $this->guzzleHttp = new GuzzleHttp();
     }
 
-    public function getCurrentTemperature(): float
+    public function getCurrentTemperature(): ?float
     {
         if ($this->weatherService->isLastCacheData($this)) {
             return $this->weatherService->getLastCacheData($this)->temperature;
         }
 
-        $connection = $this->guzzleHttp->connection('https://pokeapi.co/api/v2/pokemon/ditto');
-
-        $this->temperature = -9;
+        $openweathermap = $this->guzzleHttp->connection('https://api.openweathermap.org/data/2.5/weather?q='. $this->city .','. $this->country .'&units=metric&appid='.$this->apiKey);
+        if(is_null($openweathermap)) {
+            return null;
+        }
+        $this->temperature = $openweathermap->main->temp;
         $this->weatherService->saveWeatherToDB($this);
-        // zwróć dane o temperaturze z bufora
         return $this->temperature;
     }
 

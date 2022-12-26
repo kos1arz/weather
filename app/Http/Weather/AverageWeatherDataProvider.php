@@ -18,8 +18,11 @@ class AverageWeatherDataProvider implements WeatherDataProviderInterface
         $sum = 0;
         $count = 0;
         foreach ($this->providers as $provider) {
-            $sum += $provider->getCurrentTemperature();
-            $count++;
+            $temperature = $provider->getCurrentTemperature();
+            if(!is_null($temperature)) {
+                $sum += $provider->getCurrentTemperature();
+                $count++;
+            }
         }
         return $sum / $count;
     }

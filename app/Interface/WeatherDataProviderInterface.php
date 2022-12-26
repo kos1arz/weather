@@ -4,5 +4,5 @@ namespace App\Interface;
 
 interface WeatherDataProviderInterface
 {
-    public function getCurrentTemperature(): float;
+    public function getCurrentTemperature(): ?float;
 }

@@ -5,6 +5,7 @@ namespace App\Http\WeatherApi;
 use App\Interface\WeatherDataProviderInterface;
 use App\Http\Service\WeatherService;
 use App\Http\Guzzle\GuzzleHttp;
+use App\Http\Exception\CustomError;
 
 class WeatherBitProvider implements WeatherDataProviderInterface
 {
@@ -26,14 +27,17 @@ class WeatherBitProvider implements WeatherDataProviderInterface
         $this->guzzleHttp = new GuzzleHttp();
     }
 
-    public function getCurrentTemperature(): float
+    public function getCurrentTemperature(): ?float
     {
         if ($this->weatherService->isLastCacheData($this)) {
             return $this->weatherService->getLastCacheData($this)->temperature;
         }
 
-        $test = $this->guzzleHttp->connection('https://pokeapi.co/api/v2/pokemon/ditto');
-        $this->temperature = -10;
+        $weatherBit = $this->guzzleHttp->connection('https://api.weatherbit.io/v2.0/current?city='. $this->city .','. $this->country .'&key='. $this->apiKey .'');
+        if(is_null($weatherBit)) {
+            return null;
+        }
+        $this->temperature = $weatherBit->data[0]->temp;
         $this->weatherService->saveWeatherToDB($this);
         // zwróć dane o temperaturze z bufora
         return $this->temperature;

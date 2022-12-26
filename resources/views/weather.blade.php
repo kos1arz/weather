@@ -18,48 +18,49 @@
         <div class="container">
             <div class="mt-5 weather-box">
                 <h1 class="text-center">Aktualna pogoda</h1>
-                <form method="POST" action="/submit">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="country" class="form-label">Kraj</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="country"
-                            name="country"
-                            value="{{ old('country', '') }}"
-                        >
-                        @error('country')
-                            <div class="form-text text-danger">W polu kraj wystąpił błąd</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="city" class="form-label">Miasto</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="city"
-                            name="city"
-                            value="{{ old('city', '') }}"
-                        >
-                        @error('city')
-                            <div class="form-text text-danger">W polu miasto wystąpił błąd</div>
-                        @enderror
-                    </div>
-                    <button type="submit" class="btn btn-primary">Wyślij</button>
-
-                    @if (session()->has('errorAPI'))
-                        <div class="alert alert-danger mt-3" role="alert">
-                            {{ session()->get('errorAPI') }}
-                        </div>
-                    @endif
-                </form>
-
                 @if(isset($temperature) && isset($country) && isset($city))
-                    <div class="temperature-box">
+                    <div class="temperature-box text-center">
                         <h1 class="text-center">{{ $city }}, {{ $country }}</h1>
-                        <div class="temp text-center">@if($temperature >= 0) + @endif{{ $temperature }}<sup>&deg;</sup></div>
+                        <div class="temp text-center">@if($temperature >= 0) + @endif{{ number_format($temperature) }}<sup>&deg;</sup></div>
+                        <a href="/" class="btn btn-primary">Powrót</a>
                     </div>
+                @else
+                    <form method="POST" action="/submit">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="country" class="form-label">Kraj (zalecany w języku angielskim)</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="country"
+                                name="country"
+                                value="{{ old('country', '') }}"
+                            >
+                            @error('country')
+                                <div class="form-text text-danger">W polu kraj wystąpił błąd</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">Miasto</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="city"
+                                name="city"
+                                value="{{ old('city', '') }}"
+                            >
+                            @error('city')
+                                <div class="form-text text-danger">W polu miasto wystąpił błąd</div>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-primary">Wyślij</button>
+
+                        @if (session()->has('errorAPI'))
+                            <div class="alert alert-danger mt-3" role="alert">
+                                {{ session()->get('errorAPI') }}
+                            </div>
+                        @endif
+                    </form>
                 @endif
             </div>
         </div>
