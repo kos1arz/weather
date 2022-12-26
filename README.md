@@ -13,10 +13,12 @@ Aplikacja postawiona na docker.
 
 Komendy do wpisania:
 
-composer install
-npm install
-php artisan key:generate
-php artisan migrate
-npx mix
+<ul>
+<li>composer install</li>
+<li>npm install</li>
+<li>php artisan key:generate</li>
+<li>php artisan migrate</li>
+<li>npx mix</li>
+</ul>
 
 Dodanie do .env klucze dla OPEN_WEATHER_MAP i WEATHER_BIT
